@@ -1,9 +1,13 @@
 #include "MainWindow.h"
 #include "ImageViewer.h"
+#include "ImageLoader.h"
+#include <QImage>
 #include <QMessageBox>
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+#include <QFileDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,9 +28,34 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::openImage()
 {
+  QString fileName = QFileDialog::getOpenFileName(
+      this,
+      "Open Image",
+      QString(),
+      "Images (*.png *.jpg *.jpeg *.bmp)"
+  );
+
+  if (fileName.isEmpty())
+    return;
+
+  ImageLoader loader;
+  QImage image = loader.load(fileName);
+
+  if (image.isNull())
+  {
+    QMessageBox::warning(
+        this,
+        "Error",
+        "Failed to load image."
+        );
+    return;
+  }
+
   QMessageBox::information(
       this,
-      "Qt Viewer",
-      "Open Image will be implemented in the next step."
+      "Image Loaded",
+      QString("Image size: %1 x %2")
+          .arg(image.width())
+          .arg(image.height())
   );
 }
