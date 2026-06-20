@@ -2,6 +2,8 @@
 
 #include <QMainWindow>
 
+class ImageViewer;
+
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
@@ -9,6 +11,9 @@ class MainWindow : public QMainWindow
 public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow() override = default;
+
+private:
+  ImageViewer *viewer_;
 
 private slots:
   void openImage();

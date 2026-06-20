@@ -15,8 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
   setWindowTitle("Qt Viewer");
   resize(1000, 700);
 
-  auto *viewer = new ImageViewer(this);
-  setCentralWidget(viewer);
+  viewer_ = new ImageViewer(this);
+  setCentralWidget(viewer_);
 
   QMenu *fileMenu = menuBar()->addMenu("&File");
 
@@ -51,11 +51,5 @@ void MainWindow::openImage()
     return;
   }
 
-  QMessageBox::information(
-      this,
-      "Image Loaded",
-      QString("Image size: %1 x %2")
-          .arg(image.width())
-          .arg(image.height())
-  );
+  viewer_->setImage(image);
 }

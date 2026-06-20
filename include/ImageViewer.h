@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QGraphicsView>
+#include <QImage>
+
+class QGraphicsPixmapItem;
 
 class ImageViewer : public QGraphicsView
 {
@@ -8,4 +11,11 @@ class ImageViewer : public QGraphicsView
 
 public:
   explicit ImageViewer(QWidget *parent = nullptr);
+  void setImage(const QImage& image);
+
+protected:
+  void resizeEvent(QResizeEvent *event) override;
+
+private:
+  QGraphicsPixmapItem *pixmapItem_;
 };
