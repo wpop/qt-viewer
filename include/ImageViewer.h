@@ -15,6 +15,7 @@ public:
 
 protected:
   void resizeEvent(QResizeEvent *event) override;
+  void wheelEvent(QWheelEvent *event) override;
 
 private:
   QGraphicsPixmapItem *pixmapItem_;

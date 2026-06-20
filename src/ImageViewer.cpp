@@ -3,6 +3,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QPainter>
+#include <QWheelEvent>
 
 ImageViewer::ImageViewer(QWidget *parent)
     : QGraphicsView(parent)
@@ -27,10 +28,15 @@ void ImageViewer::setImage(const QImage& image)
 void ImageViewer::resizeEvent(QResizeEvent *event)
 {
   QGraphicsView::resizeEvent(event);
+}
 
-  if (scene() && !scene()->items().isEmpty())
-  {
-    resetTransform();
-    fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
-  }
+void ImageViewer::wheelEvent(QWheelEvent *event)
+{
+  constexpr double kZoomFactor = 1.25;
+
+  const double factor = (event->angleDelta().y() > 0)
+                            ? kZoomFactor
+                            : 1.0 / kZoomFactor;
+
+  scale(factor, factor);
 }
