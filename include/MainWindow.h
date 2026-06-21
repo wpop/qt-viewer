@@ -5,6 +5,7 @@
 
 class QMenu;
 class ImageViewer;
+class QCloseEvent;
 
 class MainWindow : public QMainWindow
 {
@@ -13,6 +14,9 @@ class MainWindow : public QMainWindow
 public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow() override = default;
+
+protected:
+  void closeEvent(QCloseEvent *event) override;
 
 private:
   ImageViewer *viewer_;
@@ -26,6 +30,8 @@ private:
   void updateStatusBar();
   void addRecentFile(const QString& fileName);
   void updateRecentFilesMenu();
+  void loadSettings();
+  void saveSettings();
 
 private slots:
   void openImage();

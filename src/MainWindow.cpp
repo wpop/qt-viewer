@@ -10,6 +10,8 @@
 #include <QMessageBox>
 #include <QStatusBar>
 #include <QKeySequence>
+#include <QSettings>
+#include <QCloseEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
   createViewer();
   createMenus();
   createStatusBar();
+  loadSettings();
 }
 
 void MainWindow::openImage()
@@ -186,11 +189,27 @@ void MainWindow::updateRecentFilesMenu()
 void MainWindow::openRecentFile()
 {
   QAction *action = qobject_cast<QAction*>(sender());
-
   if (!action)
     return;
-
   const QString fileName = action->data().toString();
-
   openImage(fileName);
+}
+
+void MainWindow::loadSettings()
+{
+  QSettings settings;
+  recentFiles_ = settings.value("recentFiles").toStringList();
+  updateRecentFilesMenu();
+}
+
+void MainWindow::saveSettings()
+{
+  QSettings settings;
+  settings.setValue("recentFiles", recentFiles_);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+  saveSettings();
+  QMainWindow::closeEvent(event);
 }
