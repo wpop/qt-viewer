@@ -17,6 +17,8 @@ public:
   void actualSize();
   QSize imageSize() const;
   double zoomFactor() const;
+  void zoomIn();
+  void zoomOut();
 
 protected:
   void resizeEvent(QResizeEvent *event) override;

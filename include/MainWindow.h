@@ -25,4 +25,6 @@ private slots:
   void openImage();
   void fitToWindow();
   void actualSize();
+  void zoomIn();
+  void zoomOut();
 };

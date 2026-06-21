@@ -34,14 +34,14 @@ void ImageViewer::resizeEvent(QResizeEvent *event)
 
 void ImageViewer::wheelEvent(QWheelEvent *event)
 {
-  fitMode_ = false;
-  constexpr double kZoomFactor = 1.25;
-
-  const double factor = (event->angleDelta().y() > 0)
-                            ? kZoomFactor
-                            : 1.0 / kZoomFactor;
-
-  scale(factor, factor);
+  if (event->angleDelta().y() > 0)
+  {
+    zoomIn();
+  }
+  else
+  {
+    zoomOut();
+  }
 }
 
 void ImageViewer::fitToWindow()
@@ -69,4 +69,20 @@ QSize ImageViewer::imageSize() const
 double ImageViewer::zoomFactor() const
 {
   return transform().m11();
+}
+
+void ImageViewer::zoomIn()
+{
+  fitMode_ = false;
+
+  constexpr double kZoomFactor = 1.25;
+  scale(kZoomFactor, kZoomFactor);
+}
+
+void ImageViewer::zoomOut()
+{
+  fitMode_ = false;
+
+  constexpr double kZoomFactor = 1.25;
+  scale(1.0 / kZoomFactor, 1.0 / kZoomFactor);
 }

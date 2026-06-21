@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStatusBar>
+#include <QKeySequence>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -71,17 +72,32 @@ void MainWindow::createMenus()
   QMenu *fileMenu = menuBar()->addMenu("&File");
 
   QAction *openAction = fileMenu->addAction("&Open Image...");
+  openAction->setShortcut(QKeySequence::Open);
   connect(openAction, &QAction::triggered,
           this, &MainWindow::openImage);
 
   // View menu actions
   QMenu *viewMenu = menuBar()->addMenu("&View");
 
+  QAction *zoomInAction = viewMenu->addAction("Zoom &In");
+  zoomInAction->setShortcut(QKeySequence::ZoomIn);
+  connect(zoomInAction, &QAction::triggered,
+          this, &MainWindow::zoomIn);
+
+  QAction *zoomOutAction = viewMenu->addAction("Zoom &Out");
+  zoomOutAction->setShortcut(QKeySequence::ZoomOut);
+  connect(zoomOutAction, &QAction::triggered,
+          this, &MainWindow::zoomOut);
+
+  viewMenu->addSeparator();
+
   QAction *fitAction = viewMenu->addAction("Fit to &Window");
+  fitAction->setShortcut(QKeySequence("Ctrl+F"));
   connect(fitAction, &QAction::triggered,
           this, &MainWindow::fitToWindow);
 
   QAction *actualSizeAction = viewMenu->addAction("&Actual Size");
+  actualSizeAction->setShortcut(QKeySequence("Ctrl+0"));
   connect(actualSizeAction, &QAction::triggered,
           this, &MainWindow::actualSize);
 }
@@ -102,4 +118,16 @@ void MainWindow::updateStatusBar()
           .arg(imageSize.width())
           .arg(imageSize.height())
           .arg(zoomPercent));
+}
+
+void MainWindow::zoomIn()
+{
+  viewer_->zoomIn();
+  updateStatusBar();
+}
+
+void MainWindow::zoomOut()
+{
+  viewer_->zoomOut();
+  updateStatusBar();
 }
