@@ -30,6 +30,8 @@ private slots:
   void clearRecentFiles();
   void rotateLeft();
   void rotateRight();
+  void flipHorizontal();
+  void flipVertical();
 
 private:
   // UI
@@ -60,4 +62,8 @@ private:
   QAction *zoomOutAction_ = nullptr;
   QAction *fitAction_ = nullptr;
   QAction *actualSizeAction_ = nullptr;
+
+  QAction *flipHorizontalAction_ = nullptr;
+  QAction *flipVerticalAction_ = nullptr;
+
 };

@@ -28,6 +28,8 @@ public:
 
   void rotateLeft();
   void rotateRight();
+  void flipHorizontal();
+  void flipVertical();
 
   QSize imageSize() const;
   double zoomFactor() const;

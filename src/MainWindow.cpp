@@ -155,6 +155,19 @@ void MainWindow::createMenus()
   rotateRightAction_->setStatusTip("Rotate image right");
   connect(rotateRightAction_, &QAction::triggered,
           this, &MainWindow::rotateRight);
+
+
+  imageMenu->addSeparator();
+
+  flipHorizontalAction_ = imageMenu->addAction("Flip &Horizontal");
+  flipHorizontalAction_->setStatusTip("Flip image horizontally");
+  connect(flipHorizontalAction_, &QAction::triggered,
+          this, &MainWindow::flipHorizontal);
+
+  flipVerticalAction_ = imageMenu->addAction("Flip &Vertical");
+  flipVerticalAction_->setStatusTip("Flip image vertically");
+  connect(flipVerticalAction_, &QAction::triggered,
+          this, &MainWindow::flipVertical);
 }
 
 void MainWindow::createStatusBar()
@@ -277,6 +290,11 @@ void MainWindow::createToolBar()
   toolBar->addSeparator();
   toolBar->addAction(rotateLeftAction_);
   toolBar->addAction(rotateRightAction_);
+
+  toolBar->addSeparator();
+
+  toolBar->addAction(flipHorizontalAction_);
+  toolBar->addAction(flipVerticalAction_);
 }
 
 void MainWindow::rotateLeft()
@@ -288,5 +306,17 @@ void MainWindow::rotateLeft()
 void MainWindow::rotateRight()
 {
   viewer_->rotateRight();
+  updateStatusBar();
+}
+
+void MainWindow::flipHorizontal()
+{
+  viewer_->flipHorizontal();
+  updateStatusBar();
+}
+
+void MainWindow::flipVertical()
+{
+  viewer_->flipVertical();
   updateStatusBar();
 }

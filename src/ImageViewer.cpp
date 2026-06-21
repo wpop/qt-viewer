@@ -10,6 +10,8 @@
 #include <QUrl>
 #include <QWheelEvent>
 #include <QWidget>
+#include <QPixmap>
+#include <QTransform>
 
 namespace
 {
@@ -143,3 +145,32 @@ void ImageViewer::rotateRight()
     fitToWindow();
 }
 
+void ImageViewer::flipHorizontal()
+{
+  const QPixmap pixmap = pixmapItem_->pixmap();
+
+  QTransform transform;
+  transform.scale(-1.0, 1.0);
+
+  pixmapItem_->setPixmap(pixmap.transformed(transform));
+
+  scene()->setSceneRect(pixmapItem_->boundingRect());
+
+  if (fitMode_)
+    fitToWindow();
+}
+
+void ImageViewer::flipVertical()
+{
+  const QPixmap pixmap = pixmapItem_->pixmap();
+
+  QTransform transform;
+  transform.scale(1.0, -1.0);
+
+  pixmapItem_->setPixmap(pixmap.transformed(transform));
+
+  scene()->setSceneRect(pixmapItem_->boundingRect());
+
+  if (fitMode_)
+    fitToWindow();
+}
