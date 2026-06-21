@@ -5,6 +5,21 @@
 #include <QPainter>
 #include <QWheelEvent>
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+#include <QUrl>
+
+#include <QWidget>
+
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QMimeData>
+#include <QUrl>
+#include <QWidget>
+
+
 ImageViewer::ImageViewer(QWidget *parent)
     : QGraphicsView(parent)
 {
@@ -15,6 +30,9 @@ ImageViewer::ImageViewer(QWidget *parent)
   pixmapItem_ = graphicsScene->addPixmap(QPixmap());
   setResizeAnchor(QGraphicsView::AnchorViewCenter);
   setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
+  setAcceptDrops(true);
+  viewport()->setAcceptDrops(true);
 }
 
 void ImageViewer::setImage(const QImage& image)
@@ -85,4 +103,32 @@ void ImageViewer::zoomOut()
 
   constexpr double kZoomFactor = 1.25;
   scale(1.0 / kZoomFactor, 1.0 / kZoomFactor);
+}
+
+void ImageViewer::dragEnterEvent(QDragEnterEvent *event)
+{
+  if (event->mimeData()->hasUrls())
+    event->acceptProposedAction();
+}
+
+void ImageViewer::dragMoveEvent(QDragMoveEvent *event)
+{
+  if (event->mimeData()->hasUrls())
+    event->acceptProposedAction();
+}
+
+void ImageViewer::dropEvent(QDropEvent *event)
+{
+  const QList<QUrl> urls = event->mimeData()->urls();
+
+  if (urls.isEmpty())
+    return;
+
+  const QString fileName = urls.first().toLocalFile();
+
+  if (fileName.isEmpty())
+    return;
+
+  emit imageDropped(fileName);
+  event->acceptProposedAction();
 }

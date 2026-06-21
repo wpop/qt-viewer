@@ -24,17 +24,23 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::openImage()
 {
-  QString fileName = QFileDialog::getOpenFileName(
+  const QString fileName = QFileDialog::getOpenFileName(
       this,
       "Open Image",
       QString(),
       "Images (*.png *.jpg *.jpeg *.bmp)"
-  );
+      );
 
   if (fileName.isEmpty())
     return;
 
+  openImage(fileName);
+}
+
+void MainWindow::openImage(const QString& fileName)
+{
   ImageLoader loader;
+
   QImage image = loader.load(fileName);
 
   if (image.isNull())
@@ -48,6 +54,7 @@ void MainWindow::openImage()
   }
 
   viewer_->setImage(image);
+  updateStatusBar();
 }
 
 void MainWindow::fitToWindow()
@@ -64,6 +71,13 @@ void MainWindow::createViewer()
 {
   viewer_ = new ImageViewer(this);
   setCentralWidget(viewer_);
+
+  // Disambiguate the overloaded openImage() slot.
+  connect(viewer_,
+          &ImageViewer::imageDropped,
+          this,
+          static_cast<void (MainWindow::*)(const QString&)>(
+              &MainWindow::openImage));
 }
 
 void MainWindow::createMenus()
@@ -73,8 +87,11 @@ void MainWindow::createMenus()
 
   QAction *openAction = fileMenu->addAction("&Open Image...");
   openAction->setShortcut(QKeySequence::Open);
-  connect(openAction, &QAction::triggered,
-          this, &MainWindow::openImage);
+  // Explicitly select the correct overloaded slot for connect().
+  connect(openAction,
+          &QAction::triggered,
+          this,
+          static_cast<void (MainWindow::*)()>(&MainWindow::openImage));
 
   // View menu actions
   QMenu *viewMenu = menuBar()->addMenu("&View");

@@ -3,8 +3,12 @@
 #include <QGraphicsView>
 #include <QImage>
 #include <QSize>
+#include <QString>
 
 class QGraphicsPixmapItem;
+class QDragEnterEvent;
+class QDragMoveEvent;
+class QDropEvent;
 
 class ImageViewer : public QGraphicsView
 {
@@ -23,6 +27,13 @@ public:
 protected:
   void resizeEvent(QResizeEvent *event) override;
   void wheelEvent(QWheelEvent *event) override;
+
+  void dragEnterEvent(QDragEnterEvent *event) override;
+  void dragMoveEvent(QDragMoveEvent *event) override;
+  void dropEvent(QDropEvent *event) override;
+
+signals:
+  void imageDropped(const QString& fileName);
 
 private:
   QGraphicsPixmapItem *pixmapItem_;

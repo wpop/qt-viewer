@@ -23,6 +23,7 @@ private:
 
 private slots:
   void openImage();
+  void openImage(const QString& fileName);
   void fitToWindow();
   void actualSize();
   void zoomIn();
