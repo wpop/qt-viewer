@@ -55,6 +55,8 @@ void MainWindow::openImage(const QString& fileName)
 
   viewer_->setImage(image);
   updateStatusBar();
+
+  addRecentFile(fileName);
 }
 
 void MainWindow::fitToWindow()
@@ -84,9 +86,12 @@ void MainWindow::createMenus()
 {
   // File menu actions
   QMenu *fileMenu = menuBar()->addMenu("&File");
-
   QAction *openAction = fileMenu->addAction("&Open Image...");
   openAction->setShortcut(QKeySequence::Open);
+
+  recentMenu_ = fileMenu->addMenu("Open &Recent");
+  fileMenu->addSeparator();
+
   // Explicitly select the correct overloaded slot for connect().
   connect(openAction,
           &QAction::triggered,
@@ -147,4 +152,45 @@ void MainWindow::zoomOut()
 {
   viewer_->zoomOut();
   updateStatusBar();
+}
+
+void MainWindow::addRecentFile(const QString& fileName)
+{
+  recentFiles_.removeAll(fileName);
+  recentFiles_.prepend(fileName);
+
+  constexpr int kMaxRecentFiles = 5;
+
+  while (recentFiles_.size() > kMaxRecentFiles)
+    recentFiles_.removeLast();
+
+  updateRecentFilesMenu();
+}
+
+void MainWindow::updateRecentFilesMenu()
+{
+  recentMenu_->clear();
+
+  for (const QString& fileName : recentFiles_)
+  {
+    QAction *action = recentMenu_->addAction(fileName);
+    action->setData(fileName);
+
+    connect(action, &QAction::triggered,
+            this, &MainWindow::openRecentFile);
+  }
+
+  recentMenu_->setEnabled(!recentFiles_.isEmpty());
+}
+
+void MainWindow::openRecentFile()
+{
+  QAction *action = qobject_cast<QAction*>(sender());
+
+  if (!action)
+    return;
+
+  const QString fileName = action->data().toString();
+
+  openImage(fileName);
 }

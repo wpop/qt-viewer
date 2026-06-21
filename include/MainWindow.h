@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QStringList>
 
+class QMenu;
 class ImageViewer;
 
 class MainWindow : public QMainWindow
@@ -14,12 +16,16 @@ public:
 
 private:
   ImageViewer *viewer_;
+  QMenu *recentMenu_ = nullptr;
+  QStringList recentFiles_;
 
 private:
   void createViewer();
   void createMenus();
   void createStatusBar();
   void updateStatusBar();
+  void addRecentFile(const QString& fileName);
+  void updateRecentFilesMenu();
 
 private slots:
   void openImage();
@@ -28,4 +34,5 @@ private slots:
   void actualSize();
   void zoomIn();
   void zoomOut();
+  void openRecentFile();
 };
