@@ -13,6 +13,7 @@ public:
   explicit ImageViewer(QWidget *parent = nullptr);
   void setImage(const QImage& image);
   void fitToWindow();
+  void actualSize();
 
 protected:
   void resizeEvent(QResizeEvent *event) override;

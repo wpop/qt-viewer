@@ -18,4 +18,5 @@ private:
 private slots:
   void openImage();
   void fitToWindow();
+  void actualSize();
 };

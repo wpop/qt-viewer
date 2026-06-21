@@ -8,6 +8,7 @@
 #include <QAction>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QStatusBar>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -25,10 +26,16 @@ MainWindow::MainWindow(QWidget *parent)
           this, &MainWindow::openImage);
 
   QMenu *viewMenu = menuBar()->addMenu("&View");
-  QAction *fitAction = viewMenu->addAction("Fit to &Window");
 
+  QAction *fitAction = viewMenu->addAction("Fit to &Window");
   connect(fitAction, &QAction::triggered,
           this, &MainWindow::fitToWindow);
+
+  QAction *actualSizeAction = viewMenu->addAction("&Actual Size");
+  connect(actualSizeAction, &QAction::triggered,
+          this, &MainWindow::actualSize);
+
+  statusBar()->showMessage("Ready");
 }
 
 void MainWindow::openImage()
@@ -62,4 +69,9 @@ void MainWindow::openImage()
 void MainWindow::fitToWindow()
 {
   viewer_->fitToWindow();
+}
+
+void MainWindow::actualSize()
+{
+  viewer_->actualSize();
 }

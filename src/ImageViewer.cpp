@@ -48,3 +48,8 @@ void ImageViewer::fitToWindow()
   resetTransform();
   fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 }
+
+void ImageViewer::actualSize()
+{
+  resetTransform();
+}
