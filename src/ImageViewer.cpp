@@ -27,10 +27,14 @@ void ImageViewer::setImage(const QImage& image)
 void ImageViewer::resizeEvent(QResizeEvent *event)
 {
   QGraphicsView::resizeEvent(event);
+
+  if (fitMode_)
+    fitToWindow();
 }
 
 void ImageViewer::wheelEvent(QWheelEvent *event)
 {
+  fitMode_ = false;
   constexpr double kZoomFactor = 1.25;
 
   const double factor = (event->angleDelta().y() > 0)
@@ -45,11 +49,24 @@ void ImageViewer::fitToWindow()
   if (!scene() || scene()->items().isEmpty())
     return;
 
+  fitMode_ = true;
+
   resetTransform();
   fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
 void ImageViewer::actualSize()
 {
+  fitMode_ = false;
   resetTransform();
+}
+
+QSize ImageViewer::imageSize() const
+{
+  return pixmapItem_->pixmap().size();
+}
+
+double ImageViewer::zoomFactor() const
+{
+  return transform().m11();
 }

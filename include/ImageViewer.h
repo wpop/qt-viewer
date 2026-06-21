@@ -2,6 +2,7 @@
 
 #include <QGraphicsView>
 #include <QImage>
+#include <QSize>
 
 class QGraphicsPixmapItem;
 
@@ -14,6 +15,8 @@ public:
   void setImage(const QImage& image);
   void fitToWindow();
   void actualSize();
+  QSize imageSize() const;
+  double zoomFactor() const;
 
 protected:
   void resizeEvent(QResizeEvent *event) override;
@@ -21,4 +24,5 @@ protected:
 
 private:
   QGraphicsPixmapItem *pixmapItem_;
+  bool fitMode_ = true;
 };

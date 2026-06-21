@@ -15,6 +15,12 @@ public:
 private:
   ImageViewer *viewer_;
 
+private:
+  void createViewer();
+  void createMenus();
+  void createStatusBar();
+  void updateStatusBar();
+
 private slots:
   void openImage();
   void fitToWindow();

@@ -16,26 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
   setWindowTitle("Qt Viewer");
   resize(1000, 700);
 
-  viewer_ = new ImageViewer(this);
-  setCentralWidget(viewer_);
-
-  QMenu *fileMenu = menuBar()->addMenu("&File");
-  QAction *openAction = fileMenu->addAction("&Open Image...");
-
-  connect(openAction, &QAction::triggered,
-          this, &MainWindow::openImage);
-
-  QMenu *viewMenu = menuBar()->addMenu("&View");
-
-  QAction *fitAction = viewMenu->addAction("Fit to &Window");
-  connect(fitAction, &QAction::triggered,
-          this, &MainWindow::fitToWindow);
-
-  QAction *actualSizeAction = viewMenu->addAction("&Actual Size");
-  connect(actualSizeAction, &QAction::triggered,
-          this, &MainWindow::actualSize);
-
-  statusBar()->showMessage("Ready");
+  createViewer();
+  createMenus();
+  createStatusBar();
 }
 
 void MainWindow::openImage()
@@ -74,4 +57,49 @@ void MainWindow::fitToWindow()
 void MainWindow::actualSize()
 {
   viewer_->actualSize();
+}
+
+void MainWindow::createViewer()
+{
+  viewer_ = new ImageViewer(this);
+  setCentralWidget(viewer_);
+}
+
+void MainWindow::createMenus()
+{
+  // File menu actions
+  QMenu *fileMenu = menuBar()->addMenu("&File");
+
+  QAction *openAction = fileMenu->addAction("&Open Image...");
+  connect(openAction, &QAction::triggered,
+          this, &MainWindow::openImage);
+
+  // View menu actions
+  QMenu *viewMenu = menuBar()->addMenu("&View");
+
+  QAction *fitAction = viewMenu->addAction("Fit to &Window");
+  connect(fitAction, &QAction::triggered,
+          this, &MainWindow::fitToWindow);
+
+  QAction *actualSizeAction = viewMenu->addAction("&Actual Size");
+  connect(actualSizeAction, &QAction::triggered,
+          this, &MainWindow::actualSize);
+}
+
+void MainWindow::createStatusBar()
+{
+  updateStatusBar();
+}
+
+void MainWindow::updateStatusBar()
+{
+  const QSize imageSize = viewer_->imageSize();
+  const int zoomPercent =
+  static_cast<int>(viewer_->zoomFactor() * 100.0);
+
+  statusBar()->showMessage(
+      QString("Image: %1 × %2    Zoom: %3%")
+          .arg(imageSize.width())
+          .arg(imageSize.height())
+          .arg(zoomPercent));
 }
