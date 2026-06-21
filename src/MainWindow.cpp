@@ -7,11 +7,15 @@
 #include <QMenu>
 #include <QAction>
 #include <QFileDialog>
-#include <QMessageBox>
 #include <QStatusBar>
 #include <QKeySequence>
 #include <QSettings>
 #include <QCloseEvent>
+
+namespace
+{
+  constexpr int kMaxRecentFiles = 5;
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -65,11 +69,13 @@ void MainWindow::openImage(const QString& fileName)
 void MainWindow::fitToWindow()
 {
   viewer_->fitToWindow();
+  updateStatusBar();
 }
 
 void MainWindow::actualSize()
 {
   viewer_->actualSize();
+  updateStatusBar();
 }
 
 void MainWindow::createViewer()
@@ -136,7 +142,7 @@ void MainWindow::updateStatusBar()
 {
   const QSize imageSize = viewer_->imageSize();
   const int zoomPercent =
-  static_cast<int>(viewer_->zoomFactor() * 100.0);
+      static_cast<int>(viewer_->zoomFactor() * 100.0);
 
   statusBar()->showMessage(
       QString("Image: %1 × %2    Zoom: %3%")
@@ -161,8 +167,6 @@ void MainWindow::addRecentFile(const QString& fileName)
 {
   recentFiles_.removeAll(fileName);
   recentFiles_.prepend(fileName);
-
-  constexpr int kMaxRecentFiles = 5;
 
   while (recentFiles_.size() > kMaxRecentFiles)
     recentFiles_.removeLast();

@@ -5,10 +5,12 @@
 #include <QSize>
 #include <QString>
 
-class QGraphicsPixmapItem;
 class QDragEnterEvent;
 class QDragMoveEvent;
 class QDropEvent;
+class QGraphicsPixmapItem;
+class QResizeEvent;
+class QWheelEvent;
 
 class ImageViewer : public QGraphicsView
 {
@@ -16,13 +18,16 @@ class ImageViewer : public QGraphicsView
 
 public:
   explicit ImageViewer(QWidget *parent = nullptr);
+
   void setImage(const QImage& image);
+
   void fitToWindow();
   void actualSize();
-  QSize imageSize() const;
-  double zoomFactor() const;
   void zoomIn();
   void zoomOut();
+
+  QSize imageSize() const;
+  double zoomFactor() const;
 
 protected:
   void resizeEvent(QResizeEvent *event) override;
@@ -36,6 +41,6 @@ signals:
   void imageDropped(const QString& fileName);
 
 private:
-  QGraphicsPixmapItem *pixmapItem_;
+  QGraphicsPixmapItem *pixmapItem_ = nullptr;
   bool fitMode_ = true;
 };

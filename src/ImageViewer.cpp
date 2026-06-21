@@ -1,24 +1,20 @@
 #include "ImageViewer.h"
 
-#include <QGraphicsPixmapItem>
-#include <QGraphicsScene>
-#include <QPainter>
-#include <QWheelEvent>
-
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QMimeData>
-#include <QUrl>
-
-#include <QWidget>
-
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
 #include <QMimeData>
+#include <QPainter>
 #include <QUrl>
+#include <QWheelEvent>
 #include <QWidget>
 
+namespace
+{
+constexpr double kZoomFactor = 1.25;
+}
 
 ImageViewer::ImageViewer(QWidget *parent)
     : QGraphicsView(parent)
@@ -92,16 +88,12 @@ double ImageViewer::zoomFactor() const
 void ImageViewer::zoomIn()
 {
   fitMode_ = false;
-
-  constexpr double kZoomFactor = 1.25;
   scale(kZoomFactor, kZoomFactor);
 }
 
 void ImageViewer::zoomOut()
 {
   fitMode_ = false;
-
-  constexpr double kZoomFactor = 1.25;
   scale(1.0 / kZoomFactor, 1.0 / kZoomFactor);
 }
 

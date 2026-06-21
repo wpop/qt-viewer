@@ -29,17 +29,22 @@ private slots:
   void clearRecentFiles();
 
 private:
+  // UI
   void createViewer();
   void createMenus();
   void createStatusBar();
   void updateStatusBar();
+
+  // Recent files
   void addRecentFile(const QString& fileName);
   void updateRecentFilesMenu();
+
+  // Settings
   void loadSettings();
   void saveSettings();
 
 private:
-  ImageViewer *viewer_;
+  ImageViewer *viewer_ = nullptr;
   QMenu *recentMenu_ = nullptr;
   QStringList recentFiles_;
 };
