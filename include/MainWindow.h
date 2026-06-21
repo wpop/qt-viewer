@@ -28,6 +28,8 @@ private slots:
   void zoomOut();
   void openRecentFile();
   void clearRecentFiles();
+  void rotateLeft();
+  void rotateRight();
 
 private:
   // UI
@@ -36,6 +38,9 @@ private:
   void createStatusBar();
   void updateStatusBar();
   void createToolBar();
+
+  QAction *rotateLeftAction_ = nullptr;
+  QAction *rotateRightAction_ = nullptr;
 
   // Recent files
   void addRecentFile(const QString& fileName);

@@ -105,13 +105,13 @@ void MainWindow::createMenus()
   recentMenu_ = fileMenu->addMenu("Open &Recent");
   fileMenu->addSeparator();
 
-         // Explicitly select the correct overloaded slot for connect().
+  // Explicitly select the correct overloaded slot for connect().
   connect(openAction_,
           &QAction::triggered,
           this,
           static_cast<void (MainWindow::*)()>(&MainWindow::openImage));
 
-         // View menu actions
+  // View menu actions
   QMenu *viewMenu = menuBar()->addMenu("&View");
 
   zoomInAction_ = viewMenu->addAction("Zoom &In");
@@ -139,6 +139,22 @@ void MainWindow::createMenus()
   actualSizeAction_->setStatusTip("Show image at actual size");
   connect(actualSizeAction_, &QAction::triggered,
           this, &MainWindow::actualSize);
+
+
+  // Image menu actions
+  QMenu *imageMenu = menuBar()->addMenu("&Image");
+
+  rotateLeftAction_ = imageMenu->addAction("Rotate &Left");
+  rotateLeftAction_->setShortcut(QKeySequence("Ctrl+L"));
+  rotateLeftAction_->setStatusTip("Rotate image left");
+  connect(rotateLeftAction_, &QAction::triggered,
+          this, &MainWindow::rotateLeft);
+
+  rotateRightAction_ = imageMenu->addAction("Rotate &Right");
+  rotateRightAction_->setShortcut(QKeySequence("Ctrl+R"));
+  rotateRightAction_->setStatusTip("Rotate image right");
+  connect(rotateRightAction_, &QAction::triggered,
+          this, &MainWindow::rotateRight);
 }
 
 void MainWindow::createStatusBar()
@@ -257,4 +273,20 @@ void MainWindow::createToolBar()
 
   toolBar->addAction(fitAction_);
   toolBar->addAction(actualSizeAction_);
+
+  toolBar->addSeparator();
+  toolBar->addAction(rotateLeftAction_);
+  toolBar->addAction(rotateRightAction_);
+}
+
+void MainWindow::rotateLeft()
+{
+  viewer_->rotateLeft();
+  updateStatusBar();
+}
+
+void MainWindow::rotateRight()
+{
+  viewer_->rotateRight();
+  updateStatusBar();
 }

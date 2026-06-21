@@ -124,3 +124,22 @@ void ImageViewer::dropEvent(QDropEvent *event)
   emit imageDropped(fileName);
   event->acceptProposedAction();
 }
+
+void ImageViewer::rotateLeft()
+{
+  pixmapItem_->setRotation(pixmapItem_->rotation() - 90.0);
+  scene()->setSceneRect(pixmapItem_->sceneBoundingRect());
+
+  if (fitMode_)
+    fitToWindow();
+}
+
+void ImageViewer::rotateRight()
+{
+  pixmapItem_->setRotation(pixmapItem_->rotation() + 90.0);
+  scene()->setSceneRect(pixmapItem_->sceneBoundingRect());
+
+  if (fitMode_)
+    fitToWindow();
+}
+

@@ -26,6 +26,9 @@ public:
   void zoomIn();
   void zoomOut();
 
+  void rotateLeft();
+  void rotateRight();
+
   QSize imageSize() const;
   double zoomFactor() const;
 
