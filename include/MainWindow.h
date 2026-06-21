@@ -6,6 +6,7 @@
 class QMenu;
 class ImageViewer;
 class QCloseEvent;
+class QAction;
 
 class MainWindow : public QMainWindow
 {
@@ -34,6 +35,7 @@ private:
   void createMenus();
   void createStatusBar();
   void updateStatusBar();
+  void createToolBar();
 
   // Recent files
   void addRecentFile(const QString& fileName);
@@ -46,5 +48,11 @@ private:
 private:
   ImageViewer *viewer_ = nullptr;
   QMenu *recentMenu_ = nullptr;
-  QStringList recentFiles_;
+  QStringList recentFiles_ {};
+
+  QAction *openAction_ = nullptr;
+  QAction *zoomInAction_ = nullptr;
+  QAction *zoomOutAction_ = nullptr;
+  QAction *fitAction_ = nullptr;
+  QAction *actualSizeAction_ = nullptr;
 };

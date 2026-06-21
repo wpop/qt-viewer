@@ -11,6 +11,7 @@
 #include <QKeySequence>
 #include <QSettings>
 #include <QCloseEvent>
+#include <QToolBar>
 
 namespace
 {
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   createViewer();
   createMenus();
+  createToolBar();
   createStatusBar();
   loadSettings();
 }
@@ -95,41 +97,42 @@ void MainWindow::createMenus()
 {
   // File menu actions
   QMenu *fileMenu = menuBar()->addMenu("&File");
-  QAction *openAction = fileMenu->addAction("&Open Image...");
-  openAction->setShortcut(QKeySequence::Open);
+
+  openAction_ = fileMenu->addAction("&Open Image...");
+  openAction_->setShortcut(QKeySequence::Open);
 
   recentMenu_ = fileMenu->addMenu("Open &Recent");
   fileMenu->addSeparator();
 
-  // Explicitly select the correct overloaded slot for connect().
-  connect(openAction,
+         // Explicitly select the correct overloaded slot for connect().
+  connect(openAction_,
           &QAction::triggered,
           this,
           static_cast<void (MainWindow::*)()>(&MainWindow::openImage));
 
-  // View menu actions
+         // View menu actions
   QMenu *viewMenu = menuBar()->addMenu("&View");
 
-  QAction *zoomInAction = viewMenu->addAction("Zoom &In");
-  zoomInAction->setShortcut(QKeySequence::ZoomIn);
-  connect(zoomInAction, &QAction::triggered,
+  zoomInAction_ = viewMenu->addAction("Zoom &In");
+  zoomInAction_->setShortcut(QKeySequence::ZoomIn);
+  connect(zoomInAction_, &QAction::triggered,
           this, &MainWindow::zoomIn);
 
-  QAction *zoomOutAction = viewMenu->addAction("Zoom &Out");
-  zoomOutAction->setShortcut(QKeySequence::ZoomOut);
-  connect(zoomOutAction, &QAction::triggered,
+  zoomOutAction_ = viewMenu->addAction("Zoom &Out");
+  zoomOutAction_->setShortcut(QKeySequence::ZoomOut);
+  connect(zoomOutAction_, &QAction::triggered,
           this, &MainWindow::zoomOut);
 
   viewMenu->addSeparator();
 
-  QAction *fitAction = viewMenu->addAction("Fit to &Window");
-  fitAction->setShortcut(QKeySequence("Ctrl+F"));
-  connect(fitAction, &QAction::triggered,
+  fitAction_ = viewMenu->addAction("Fit to &Window");
+  fitAction_->setShortcut(QKeySequence("Ctrl+F"));
+  connect(fitAction_, &QAction::triggered,
           this, &MainWindow::fitToWindow);
 
-  QAction *actualSizeAction = viewMenu->addAction("&Actual Size");
-  actualSizeAction->setShortcut(QKeySequence("Ctrl+0"));
-  connect(actualSizeAction, &QAction::triggered,
+  actualSizeAction_ = viewMenu->addAction("&Actual Size");
+  actualSizeAction_->setShortcut(QKeySequence("Ctrl+0"));
+  connect(actualSizeAction_, &QAction::triggered,
           this, &MainWindow::actualSize);
 }
 
@@ -234,4 +237,19 @@ void MainWindow::clearRecentFiles()
   recentFiles_.clear();
   updateRecentFilesMenu();
   saveSettings();
+}
+
+void MainWindow::createToolBar()
+{
+  QToolBar *toolBar = addToolBar("Main Toolbar");
+
+  toolBar->addAction(openAction_);
+  toolBar->addSeparator();
+
+  toolBar->addAction(zoomInAction_);
+  toolBar->addAction(zoomOutAction_);
+  toolBar->addSeparator();
+
+  toolBar->addAction(fitAction_);
+  toolBar->addAction(actualSizeAction_);
 }
