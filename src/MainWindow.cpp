@@ -183,6 +183,17 @@ void MainWindow::updateRecentFilesMenu()
             this, &MainWindow::openRecentFile);
   }
 
+  if (!recentFiles_.isEmpty())
+  {
+    recentMenu_->addSeparator();
+
+    QAction *clearAction =
+        recentMenu_->addAction("Clear Recent Files");
+
+    connect(clearAction, &QAction::triggered,
+            this, &MainWindow::clearRecentFiles);
+  }
+
   recentMenu_->setEnabled(!recentFiles_.isEmpty());
 }
 
@@ -212,4 +223,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
   saveSettings();
   QMainWindow::closeEvent(event);
+}
+
+void MainWindow::clearRecentFiles()
+{
+  recentFiles_.clear();
+  updateRecentFilesMenu();
+  saveSettings();
 }

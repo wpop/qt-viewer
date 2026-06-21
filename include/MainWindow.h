@@ -18,10 +18,15 @@ public:
 protected:
   void closeEvent(QCloseEvent *event) override;
 
-private:
-  ImageViewer *viewer_;
-  QMenu *recentMenu_ = nullptr;
-  QStringList recentFiles_;
+private slots:
+  void openImage();
+  void openImage(const QString& fileName);
+  void fitToWindow();
+  void actualSize();
+  void zoomIn();
+  void zoomOut();
+  void openRecentFile();
+  void clearRecentFiles();
 
 private:
   void createViewer();
@@ -33,12 +38,8 @@ private:
   void loadSettings();
   void saveSettings();
 
-private slots:
-  void openImage();
-  void openImage(const QString& fileName);
-  void fitToWindow();
-  void actualSize();
-  void zoomIn();
-  void zoomOut();
-  void openRecentFile();
+private:
+  ImageViewer *viewer_;
+  QMenu *recentMenu_ = nullptr;
+  QStringList recentFiles_;
 };
