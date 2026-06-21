@@ -21,8 +21,7 @@ void ImageViewer::setImage(const QImage& image)
 {
   pixmapItem_->setPixmap(QPixmap::fromImage(image));
   scene()->setSceneRect(pixmapItem_->boundingRect());
-  resetTransform();
-  fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+  fitToWindow();
 }
 
 void ImageViewer::resizeEvent(QResizeEvent *event)
@@ -39,4 +38,13 @@ void ImageViewer::wheelEvent(QWheelEvent *event)
                             : 1.0 / kZoomFactor;
 
   scale(factor, factor);
+}
+
+void ImageViewer::fitToWindow()
+{
+  if (!scene() || scene()->items().isEmpty())
+    return;
+
+  resetTransform();
+  fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 }

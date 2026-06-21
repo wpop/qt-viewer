@@ -19,11 +19,16 @@ MainWindow::MainWindow(QWidget *parent)
   setCentralWidget(viewer_);
 
   QMenu *fileMenu = menuBar()->addMenu("&File");
-
   QAction *openAction = fileMenu->addAction("&Open Image...");
 
   connect(openAction, &QAction::triggered,
           this, &MainWindow::openImage);
+
+  QMenu *viewMenu = menuBar()->addMenu("&View");
+  QAction *fitAction = viewMenu->addAction("Fit to &Window");
+
+  connect(fitAction, &QAction::triggered,
+          this, &MainWindow::fitToWindow);
 }
 
 void MainWindow::openImage()
@@ -52,4 +57,9 @@ void MainWindow::openImage()
   }
 
   viewer_->setImage(image);
+}
+
+void MainWindow::fitToWindow()
+{
+  viewer_->fitToWindow();
 }

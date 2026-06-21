@@ -12,6 +12,7 @@ class ImageViewer : public QGraphicsView
 public:
   explicit ImageViewer(QWidget *parent = nullptr);
   void setImage(const QImage& image);
+  void fitToWindow();
 
 protected:
   void resizeEvent(QResizeEvent *event) override;
