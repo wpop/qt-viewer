@@ -100,6 +100,7 @@ void MainWindow::createMenus()
 
   openAction_ = fileMenu->addAction("&Open Image...");
   openAction_->setShortcut(QKeySequence::Open);
+  openAction_->setStatusTip("Open an image file");
 
   recentMenu_ = fileMenu->addMenu("Open &Recent");
   fileMenu->addSeparator();
@@ -115,11 +116,13 @@ void MainWindow::createMenus()
 
   zoomInAction_ = viewMenu->addAction("Zoom &In");
   zoomInAction_->setShortcut(QKeySequence::ZoomIn);
+  zoomInAction_->setStatusTip("Zoom in");
   connect(zoomInAction_, &QAction::triggered,
           this, &MainWindow::zoomIn);
 
   zoomOutAction_ = viewMenu->addAction("Zoom &Out");
   zoomOutAction_->setShortcut(QKeySequence::ZoomOut);
+  zoomOutAction_->setStatusTip("Zoom out");
   connect(zoomOutAction_, &QAction::triggered,
           this, &MainWindow::zoomOut);
 
@@ -127,11 +130,13 @@ void MainWindow::createMenus()
 
   fitAction_ = viewMenu->addAction("Fit to &Window");
   fitAction_->setShortcut(QKeySequence("Ctrl+F"));
+  fitAction_->setStatusTip("Fit image to window");
   connect(fitAction_, &QAction::triggered,
           this, &MainWindow::fitToWindow);
 
   actualSizeAction_ = viewMenu->addAction("&Actual Size");
   actualSizeAction_->setShortcut(QKeySequence("Ctrl+0"));
+  actualSizeAction_->setStatusTip("Show image at actual size");
   connect(actualSizeAction_, &QAction::triggered,
           this, &MainWindow::actualSize);
 }
