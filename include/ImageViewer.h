@@ -20,6 +20,7 @@ public:
   explicit ImageViewer(QWidget *parent = nullptr);
 
   void setImage(const QImage& image);
+  QImage image() const;
 
   void fitToWindow();
   void actualSize();

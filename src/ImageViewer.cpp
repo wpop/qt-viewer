@@ -174,3 +174,11 @@ void ImageViewer::flipVertical()
   if (fitMode_)
     fitToWindow();
 }
+
+QImage ImageViewer::image() const
+{
+  if (!pixmapItem_)
+    return QImage();
+
+  return pixmapItem_->pixmap().toImage();
+}

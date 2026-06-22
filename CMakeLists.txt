@@ -15,10 +15,12 @@ qt_add_executable(qt-viewer
     src/MainWindow.cpp
     src/ImageViewer.cpp
     src/ImageLoader.cpp
+    src/ImageProcessor.cpp
 
     include/MainWindow.h
     include/ImageViewer.h
     include/ImageLoader.h
+    include/ImageProcessor.h
 )
 
 target_include_directories(qt-viewer
