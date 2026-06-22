@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include <QStringList>
+#include <QImage>
 
 class QMenu;
 class ImageViewer;
@@ -32,6 +33,7 @@ private slots:
   void flipHorizontal();
   void flipVertical();
   void convertToGrayscale();
+  void resetImage();
   void openRecentFile();
   void clearRecentFiles();
 
@@ -60,9 +62,11 @@ private:
 
 private:
   ImageViewer *viewer_ = nullptr;
+  QImage originalImage_;
   QMenu *recentMenu_ = nullptr;
   QStringList recentFiles_ {};
 
+  // QAction section
   QAction *openAction_ = nullptr;
   QAction *saveAsAction_ = nullptr;
   QAction *zoomInAction_ = nullptr;
@@ -74,4 +78,5 @@ private:
   QAction *flipVerticalAction_ = nullptr;
 
   QAction *grayscaleAction_ = nullptr;
+  QAction *resetImageAction_ = nullptr;
 };
