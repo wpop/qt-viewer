@@ -46,7 +46,7 @@ void MainWindow::saveImageAs()
     return;
   }
 
-  const QString fileName = QFileDialog::getSaveFileName(
+  QString fileName = QFileDialog::getSaveFileName(
       this,
       "Save Image As",
       "processed_image.png",
@@ -54,6 +54,13 @@ void MainWindow::saveImageAs()
 
   if (fileName.isEmpty())
     return;
+
+  if (!fileName.endsWith(".png", Qt::CaseInsensitive) &&
+      !fileName.endsWith(".jpg", Qt::CaseInsensitive) &&
+      !fileName.endsWith(".jpeg", Qt::CaseInsensitive) &&
+      !fileName.endsWith(".bmp", Qt::CaseInsensitive)) {
+    fileName += ".png";
+  }
 
   if (!image.save(fileName)) {
     QMessageBox::warning(this,
