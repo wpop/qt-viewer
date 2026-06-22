@@ -35,8 +35,10 @@ ImageViewer::ImageViewer(QWidget *parent)
 
 void ImageViewer::setImage(const QImage& image)
 {
+  pixmapItem_->setRotation(0.0);
   pixmapItem_->setPixmap(QPixmap::fromImage(image));
   scene()->setSceneRect(pixmapItem_->boundingRect());
+  fitMode_ = true;
   fitToWindow();
 }
 

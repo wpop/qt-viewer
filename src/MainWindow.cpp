@@ -100,6 +100,7 @@ void MainWindow::openImage(const QString& fileName)
     return;
   }
 
+  originalImage_ = image;
   viewer_->setImage(image);
   updateStatusBar();
   updateActions();
@@ -232,6 +233,15 @@ void MainWindow::createImageMenu()
           &QAction::triggered,
           this,
           &MainWindow::convertToGrayscale);
+
+  imageMenu->addSeparator();
+
+  resetImageAction_ = imageMenu->addAction("&Reset Image");
+  resetImageAction_->setStatusTip("Reset image to the original version");
+  connect(resetImageAction_,
+          &QAction::triggered,
+          this,
+          &MainWindow::resetImage);
 }
 
 void MainWindow::createStatusBar()
@@ -380,6 +390,7 @@ void MainWindow::createToolBar()
 
   toolBar->addSeparator();
   toolBar->addAction(grayscaleAction_);
+  toolBar->addAction(resetImageAction_);
 }
 
 void MainWindow::rotateLeft()
@@ -416,6 +427,16 @@ void MainWindow::convertToGrayscale()
     return;
 
   viewer_->setImage(grayscaleImage);
+  updateStatusBar();
+  updateActions();
+}
+
+void MainWindow::resetImage()
+{
+  if (originalImage_.isNull())
+    return;
+
+  viewer_->setImage(originalImage_);
   updateStatusBar();
   updateActions();
 }
