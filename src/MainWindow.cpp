@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
   createToolBar();
   createStatusBar();
   loadSettings();
+
+  updateActions();
 }
 
 void MainWindow::saveImageAs()
@@ -93,6 +95,7 @@ void MainWindow::openImage(const QString& fileName)
 
   viewer_->setImage(image);
   updateStatusBar();
+  updateActions();
 
   addRecentFile(fileName);
 }
@@ -242,6 +245,24 @@ void MainWindow::updateStatusBar()
           .arg(zoomPercent));
 }
 
+void MainWindow::updateActions()
+{
+  const bool hasImage = !viewer_->image().isNull();
+
+  saveAsAction_->setEnabled(hasImage);
+
+  zoomInAction_->setEnabled(hasImage);
+  zoomOutAction_->setEnabled(hasImage);
+  fitAction_->setEnabled(hasImage);
+  actualSizeAction_->setEnabled(hasImage);
+
+  rotateLeftAction_->setEnabled(hasImage);
+  rotateRightAction_->setEnabled(hasImage);
+  flipHorizontalAction_->setEnabled(hasImage);
+  flipVerticalAction_->setEnabled(hasImage);
+  grayscaleAction_->setEnabled(hasImage);
+}
+
 void MainWindow::zoomIn()
 {
   viewer_->zoomIn();
@@ -389,4 +410,5 @@ void MainWindow::convertToGrayscale()
 
   viewer_->setImage(grayscaleImage);
   updateStatusBar();
+  updateActions();
 }

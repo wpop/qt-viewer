@@ -44,6 +44,7 @@ private:
   void createImageMenu();
   void createStatusBar();
   void updateStatusBar();
+  void updateActions();
   void createToolBar();
 
   QAction *rotateLeftAction_ = nullptr;
