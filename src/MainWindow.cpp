@@ -163,6 +163,7 @@ void MainWindow::createMenus()
   createFileMenu();
   createViewMenu();
   createImageMenu();
+  createHelpMenu();
 }
 
 void MainWindow::createFileMenu()
@@ -267,6 +268,18 @@ void MainWindow::createImageMenu()
           &QAction::triggered,
           this,
           &MainWindow::resetImage);
+}
+
+void MainWindow::createHelpMenu()
+{
+  QMenu *helpMenu = menuBar()->addMenu("&Help");
+
+  aboutAction_ = helpMenu->addAction("&About Qt Viewer");
+  aboutAction_->setStatusTip("Show information about Qt Viewer");
+  connect(aboutAction_,
+          &QAction::triggered,
+          this,
+          &MainWindow::showAboutDialog);
 }
 
 void MainWindow::createStatusBar()
@@ -484,4 +497,22 @@ void MainWindow::resetImage()
   viewer_->setImage(originalImage_);
   updateStatusBar();
   updateActions();
+}
+
+void MainWindow::showAboutDialog()
+{
+  QMessageBox::about(
+      this,
+      "About Qt Viewer",
+      "Qt Viewer\n\n"
+      "A lightweight desktop image viewer built with C++, Qt Widgets, and OpenCV.\n\n"
+      "Features:\n"
+      "- Open images\n"
+      "- Drag and drop\n"
+      "- Zoom, fit, and actual size\n"
+      "- Rotate and flip\n"
+      "- Grayscale processing\n"
+      "- Reset image\n"
+      "- Save processed image\n\n"
+      "Version: 0.1");
 }

@@ -34,6 +34,7 @@ private slots:
   void flipVertical();
   void convertToGrayscale();
   void resetImage();
+  void showAboutDialog();
   void openRecentFile();
   void clearRecentFiles();
 
@@ -44,6 +45,7 @@ private:
   void createFileMenu();
   void createViewMenu();
   void createImageMenu();
+  void createHelpMenu();
   void createStatusBar();
   void updateStatusBar();
   void updateActions();
@@ -79,4 +81,5 @@ private:
 
   QAction *grayscaleAction_ = nullptr;
   QAction *resetImageAction_ = nullptr;
+  QAction *aboutAction_ = nullptr;
 };
