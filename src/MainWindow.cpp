@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include "ImageViewer.h"
 #include "ImageLoader.h"
+#include "ImageProcessor.h"
+
 #include <QImage>
 #include <QMessageBox>
 #include <QMenuBar>
@@ -85,7 +87,7 @@ void MainWindow::createViewer()
   viewer_ = new ImageViewer(this);
   setCentralWidget(viewer_);
 
-  // Disambiguate the overloaded openImage() slot.
+  // Explicitly select openImage(const QString&) because openImage() is overloaded.
   connect(viewer_,
           &ImageViewer::imageDropped,
           this,
@@ -95,7 +97,13 @@ void MainWindow::createViewer()
 
 void MainWindow::createMenus()
 {
-  // File menu actions
+  createFileMenu();
+  createViewMenu();
+  createImageMenu();
+}
+
+void MainWindow::createFileMenu()
+{
   QMenu *fileMenu = menuBar()->addMenu("&File");
 
   openAction_ = fileMenu->addAction("&Open Image...");
@@ -105,13 +113,15 @@ void MainWindow::createMenus()
   recentMenu_ = fileMenu->addMenu("Open &Recent");
   fileMenu->addSeparator();
 
-  // Explicitly select the correct overloaded slot for connect().
+  // Explicitly select openImage() because it is overloaded.
   connect(openAction_,
           &QAction::triggered,
           this,
           static_cast<void (MainWindow::*)()>(&MainWindow::openImage));
+}
 
-  // View menu actions
+void MainWindow::createViewMenu()
+{
   QMenu *viewMenu = menuBar()->addMenu("&View");
 
   zoomInAction_ = viewMenu->addAction("Zoom &In");
@@ -139,9 +149,10 @@ void MainWindow::createMenus()
   actualSizeAction_->setStatusTip("Show image at actual size");
   connect(actualSizeAction_, &QAction::triggered,
           this, &MainWindow::actualSize);
+}
 
-
-  // Image menu actions
+void MainWindow::createImageMenu()
+{
   QMenu *imageMenu = menuBar()->addMenu("&Image");
 
   rotateLeftAction_ = imageMenu->addAction("Rotate &Left");
@@ -156,7 +167,6 @@ void MainWindow::createMenus()
   connect(rotateRightAction_, &QAction::triggered,
           this, &MainWindow::rotateRight);
 
-
   imageMenu->addSeparator();
 
   flipHorizontalAction_ = imageMenu->addAction("Flip &Horizontal");
@@ -168,6 +178,15 @@ void MainWindow::createMenus()
   flipVerticalAction_->setStatusTip("Flip image vertically");
   connect(flipVerticalAction_, &QAction::triggered,
           this, &MainWindow::flipVertical);
+
+  imageMenu->addSeparator();
+
+  grayscaleAction_ = imageMenu->addAction("&Grayscale");
+  grayscaleAction_->setStatusTip("Convert image to grayscale");
+  connect(grayscaleAction_,
+          &QAction::triggered,
+          this,
+          &MainWindow::convertToGrayscale);
 }
 
 void MainWindow::createStatusBar()
@@ -295,6 +314,9 @@ void MainWindow::createToolBar()
 
   toolBar->addAction(flipHorizontalAction_);
   toolBar->addAction(flipVerticalAction_);
+
+  toolBar->addSeparator();
+  toolBar->addAction(grayscaleAction_);
 }
 
 void MainWindow::rotateLeft()
@@ -318,5 +340,18 @@ void MainWindow::flipHorizontal()
 void MainWindow::flipVertical()
 {
   viewer_->flipVertical();
+  updateStatusBar();
+}
+
+void MainWindow::convertToGrayscale()
+{
+  ImageProcessor processor;
+
+  const QImage grayscaleImage = processor.toGrayscale(viewer_->image());
+
+  if (grayscaleImage.isNull())
+    return;
+
+  viewer_->setImage(grayscaleImage);
   updateStatusBar();
 }

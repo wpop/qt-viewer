@@ -26,17 +26,21 @@ private slots:
   void actualSize();
   void zoomIn();
   void zoomOut();
-  void openRecentFile();
-  void clearRecentFiles();
   void rotateLeft();
   void rotateRight();
   void flipHorizontal();
   void flipVertical();
+  void convertToGrayscale();
+  void openRecentFile();
+  void clearRecentFiles();
 
 private:
   // UI
   void createViewer();
   void createMenus();
+  void createFileMenu();
+  void createViewMenu();
+  void createImageMenu();
   void createStatusBar();
   void updateStatusBar();
   void createToolBar();
@@ -66,4 +70,5 @@ private:
   QAction *flipHorizontalAction_ = nullptr;
   QAction *flipVerticalAction_ = nullptr;
 
+  QAction *grayscaleAction_ = nullptr;
 };
