@@ -2,6 +2,10 @@
 
 A lightweight image viewer built with modern C++, Qt Widgets, and CMake.
 
+## Screenshot
+
+![Qt Viewer grayscale demo](docs/images/qt_viewer_grayscale.png)
+
 ## Features
 
 - Load and display images
