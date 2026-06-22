@@ -15,9 +15,34 @@
 #include <QCloseEvent>
 #include <QToolBar>
 
+#include <QSize>
+#include <QStyle>
+
+#include <QIcon>
+#include <QPainter>
+#include <QPixmap>
+
 namespace
 {
   constexpr int kMaxRecentFiles = 5;
+
+  QIcon createTextIcon(const QString& text)
+  {
+    QPixmap pixmap(24, 24);
+    pixmap.fill(Qt::transparent);
+
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QFont font = painter.font();
+    font.setBold(true);
+    font.setPointSize(16);
+    painter.setFont(font);
+
+    painter.drawText(pixmap.rect(), Qt::AlignCenter, text);
+
+    return QIcon(pixmap);
+  }
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -368,8 +393,29 @@ void MainWindow::clearRecentFiles()
 void MainWindow::createToolBar()
 {
   QToolBar *toolBar = addToolBar("Main Toolbar");
+  toolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+  toolBar->setIconSize(QSize(24, 24));
+
+  openAction_->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton));
+  saveAsAction_->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
+
+  zoomInAction_->setIcon(createTextIcon("+"));
+  zoomOutAction_->setIcon(createTextIcon("-"));
+
+  fitAction_->setIcon(style()->standardIcon(QStyle::SP_ArrowForward));
+  actualSizeAction_->setIcon(style()->standardIcon(QStyle::SP_DialogResetButton));
+
+  rotateLeftAction_->setIcon(style()->standardIcon(QStyle::SP_ArrowBack));
+  rotateRightAction_->setIcon(style()->standardIcon(QStyle::SP_ArrowForward));
+
+  flipHorizontalAction_->setIcon(style()->standardIcon(QStyle::SP_ArrowLeft));
+  flipVerticalAction_->setIcon(style()->standardIcon(QStyle::SP_ArrowDown));
+
+  grayscaleAction_->setIcon(createTextIcon("▣"));
+  resetImageAction_->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
 
   toolBar->addAction(openAction_);
+  toolBar->addAction(saveAsAction_);
   toolBar->addSeparator();
 
   toolBar->addAction(zoomInAction_);
@@ -378,17 +424,16 @@ void MainWindow::createToolBar()
 
   toolBar->addAction(fitAction_);
   toolBar->addAction(actualSizeAction_);
-
   toolBar->addSeparator();
+
   toolBar->addAction(rotateLeftAction_);
   toolBar->addAction(rotateRightAction_);
-
   toolBar->addSeparator();
 
   toolBar->addAction(flipHorizontalAction_);
   toolBar->addAction(flipVerticalAction_);
-
   toolBar->addSeparator();
+
   toolBar->addAction(grayscaleAction_);
   toolBar->addAction(resetImageAction_);
 }
