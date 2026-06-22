@@ -22,6 +22,7 @@ protected:
 private slots:
   void openImage();
   void openImage(const QString& fileName);
+  void saveImageAs();
   void fitToWindow();
   void actualSize();
   void zoomIn();
@@ -62,6 +63,7 @@ private:
   QStringList recentFiles_ {};
 
   QAction *openAction_ = nullptr;
+  QAction *saveAsAction_ = nullptr;
   QAction *zoomInAction_ = nullptr;
   QAction *zoomOutAction_ = nullptr;
   QAction *fitAction_ = nullptr;

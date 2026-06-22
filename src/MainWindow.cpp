@@ -33,6 +33,33 @@ MainWindow::MainWindow(QWidget *parent)
   loadSettings();
 }
 
+void MainWindow::saveImageAs()
+{
+  const QImage image = viewer_->image();
+
+  if (image.isNull()) {
+    QMessageBox::information(this,
+                             "No Image",
+                             "There is no image to save.");
+    return;
+  }
+
+  const QString fileName = QFileDialog::getSaveFileName(
+      this,
+      "Save Image As",
+      "processed_image.png",
+      "Images (*.png *.jpg *.jpeg *.bmp)");
+
+  if (fileName.isEmpty())
+    return;
+
+  if (!image.save(fileName)) {
+    QMessageBox::warning(this,
+                         "Save Failed",
+                         "Could not save the image.");
+  }
+}
+
 void MainWindow::openImage()
 {
   const QString fileName = QFileDialog::getOpenFileName(
@@ -109,6 +136,14 @@ void MainWindow::createFileMenu()
   openAction_ = fileMenu->addAction("&Open Image...");
   openAction_->setShortcut(QKeySequence::Open);
   openAction_->setStatusTip("Open an image file");
+
+  saveAsAction_ = fileMenu->addAction("Save Image &As...");
+  saveAsAction_->setShortcut(QKeySequence::SaveAs);
+  saveAsAction_->setStatusTip("Save the current image as a file");
+  connect(saveAsAction_,
+          &QAction::triggered,
+          this,
+          &MainWindow::saveImageAs);
 
   recentMenu_ = fileMenu->addMenu("Open &Recent");
   fileMenu->addSeparator();
